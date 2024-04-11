@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ltu.m7019e.miniproject.countries.database.Countries
+import com.ltu.m7019e.miniproject.countries.ui.screens.CountryListScreen
 import com.ltu.m7019e.miniproject.countries.ui.theme.CountriesTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,25 +24,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    CountriesApp()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CountriesTheme {
-        Greeting("Android")
     }
 }
