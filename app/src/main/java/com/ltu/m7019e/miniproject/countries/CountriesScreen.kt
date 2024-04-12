@@ -19,8 +19,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,26 +29,27 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ltu.m7019e.miniproject.countries.database.Countries
+import com.ltu.m7019e.miniproject.countries.model.Country
+import com.ltu.m7019e.miniproject.countries.ui.screens.CountryDetailScreen
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryListScreen
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountryViewModel
-
-enum class MovieDBScreen(@StringRes val title: Int) {
+enum class CountriesScreen(@StringRes val title: Int) {
     List(title = R.string.app_name),
     Detail(title = R.string.country_detail),
     Saved(title = R.string.saved_countries)
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieDBAppBar(
-    currentScreen: MovieDBScreen,
+fun CountriesAppBar(
+    currentScreen: CountriesScreen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
         title = { Text(stringResource(currentScreen.title)) },
+        //title = { Text(currentScreen.title) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -57,7 +59,8 @@ fun MovieDBAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back_button)
+                        //contentDescription = stringResource(R.string.back_button)
+                        contentDescription = "Back"
                     )
                 }
             }
@@ -65,8 +68,54 @@ fun MovieDBAppBar(
     )
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountriesApp(viewModel: CountryViewModel = viewModel(),
                  navController: NavHostController = rememberNavController()) {
-    CountryListScreen(countryList = Countries().getCountries())
+    val backStackEntry by navController.currentBackStackEntryAsState()
+
+    val currentScreen = CountriesScreen.valueOf(
+        backStackEntry?.destination?.route ?: CountriesScreen.List.name
+    )
+
+    Scaffold(
+        topBar = {
+            CountriesAppBar(
+                currentScreen = currentScreen,
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() }
+            )
+        }
+    ) { innerPadding ->
+        val uiState by viewModel.uiState.collectAsState()
+
+        NavHost(
+            navController = navController,
+            startDestination = CountriesScreen.List.name,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            composable(route = CountriesScreen.List.name) {
+                CountryListScreen(
+                    countryList = Countries().getCountries(),
+                    countryListItemClicked = { country ->
+                        viewModel.setSelectedCountry(country)
+                        navController.navigate(CountriesScreen.Detail.name)
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                )
+            }
+            composable(route = CountriesScreen.Detail.name) {
+                uiState.selectedCountry?.let { selectedCountry ->
+                    CountryDetailScreen(
+                        country = selectedCountry
+                    )
+                }
+            }
+        }
+    }
 }

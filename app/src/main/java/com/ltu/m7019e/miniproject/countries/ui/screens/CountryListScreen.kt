@@ -25,13 +25,14 @@ import com.ltu.m7019e.miniproject.countries.model.Country
 import com.ltu.m7019e.miniproject.countries.ui.theme.CountriesTheme
 
 @Composable
-fun CountryListScreen(countryList: List<Country>,
+fun CountryListScreen(countryList: List<Country>, countryListItemClicked : (Country) -> Unit,
                       modifier: Modifier = Modifier){
     LazyColumn (modifier = modifier){
         items(countryList){ country ->
             CountryListItemCard(
                 country = country,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
+                countryListItemClicked = countryListItemClicked
             )
         }
 
@@ -42,8 +43,10 @@ fun CountryListScreen(countryList: List<Country>,
 @Composable
 fun CountryListItemCard(
     country : Country,
-    modifier: Modifier = Modifier){
+    modifier: Modifier = Modifier,
+    countryListItemClicked: (Country) -> Unit){
     Card(modifier = modifier,
+        onClick = { countryListItemClicked(country) }
 
         ) {
         Row {
@@ -55,7 +58,7 @@ fun CountryListItemCard(
                         .width(110.dp)
                         .height(80.dp),
                     //contentScale = ContentScale.Crop
-               )
+                )
             }
             Column {
                 Text(text = country.name, style = MaterialTheme.typography.headlineSmall)
@@ -64,7 +67,7 @@ fun CountryListItemCard(
         }
     }
 }
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun CountryItemPreview() {
@@ -86,4 +89,4 @@ fun CountryItemPreview() {
         ),
         )
     }
-}
+} */
