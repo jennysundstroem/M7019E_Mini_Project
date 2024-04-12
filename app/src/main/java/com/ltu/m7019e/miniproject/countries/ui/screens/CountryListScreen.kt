@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,10 +45,12 @@ fun CountryListScreen(countryList: List<Country>, countryListItemClicked : (Coun
 fun CountryListItemCard(
     country : Country,
     modifier: Modifier = Modifier,
-    countryListItemClicked: (Country) -> Unit){
-    Card(modifier = modifier,
+    countryListItemClicked: (Country) -> Unit
+){
+    Card(modifier = modifier
+        //.padding(8.dp)
+        .fillMaxWidth(),
         onClick = { countryListItemClicked(country) }
-
         ) {
         Row {
             Box {
@@ -55,18 +58,37 @@ fun CountryListItemCard(
                     model = country.flagUrl,
                     contentDescription = country.name,
                     modifier = modifier
-                        .width(110.dp)
+                        .width(140.dp)
                         .height(80.dp),
-                    //contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop
                 )
             }
-            Column {
+            Spacer(modifier = Modifier.size(26.dp))
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .weight(1f) // Occupy remaining space in the row
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
                 Text(text = country.name, style = MaterialTheme.typography.headlineSmall)
-
+                Spacer(modifier = Modifier.size(8.dp))
             }
         }
     }
 }
+
+/*
+* Text(text = movie.title, style = MaterialTheme.typography.headlineSmall)
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(text = movie.releaseDate, style = MaterialTheme.typography.bodySmall)
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(
+                    text = movie.overview,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis)
+                Spacer(modifier = Modifier.size(8.dp)) */
+
 /*
 @Preview(showBackground = true)
 @Composable
