@@ -32,11 +32,13 @@ import com.ltu.m7019e.miniproject.countries.database.Countries
 import com.ltu.m7019e.miniproject.countries.model.Country
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryDetailScreen
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryListScreen
+import com.ltu.m7019e.miniproject.countries.ui.screens.CountrySearchScreen
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountryViewModel
 enum class CountriesScreen(@StringRes val title: Int) {
     List(title = R.string.app_name),
     Detail(title = R.string.country_detail),
-    Saved(title = R.string.saved_countries)
+    Saved(title = R.string.saved_countries),
+    Search(title = R.string.search_country)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,6 +102,9 @@ fun CountriesApp(viewModel: CountryViewModel = viewModel(),
             composable(route = CountriesScreen.List.name) {
                 CountryListScreen(
                     countryList = Countries().getCountries(),
+                    countrySearchButtonClicked = {
+                        viewModel.clearSelectedCountry()
+                        navController.navigate(CountriesScreen.Search.name)},
                     countryListItemClicked = { country ->
                         viewModel.setSelectedCountry(country)
                         navController.navigate(CountriesScreen.Detail.name)
@@ -110,6 +115,13 @@ fun CountriesApp(viewModel: CountryViewModel = viewModel(),
                 )
             }
             composable(route = CountriesScreen.Detail.name) {
+                uiState.selectedCountry?.let { selectedCountry ->
+                    CountryDetailScreen(
+                        country = selectedCountry
+                    )
+                }
+            }
+             composable(route = CountriesScreen.Search.name) {
                 uiState.selectedCountry?.let { selectedCountry ->
                     CountryDetailScreen(
                         country = selectedCountry

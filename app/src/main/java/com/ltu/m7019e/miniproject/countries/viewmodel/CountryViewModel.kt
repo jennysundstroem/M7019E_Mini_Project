@@ -19,4 +19,12 @@ class CountryViewModel: ViewModel() {
             )
         }
     }
+
+    fun clearSelectedCountry() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedCountry = null
+            )
+        }
+    }
 }
