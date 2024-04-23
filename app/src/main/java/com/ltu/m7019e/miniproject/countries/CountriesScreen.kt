@@ -2,7 +2,6 @@ package com.ltu.m7019e.miniproject.countries
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -18,9 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.Scaffold
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -28,11 +25,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ltu.m7019e.miniproject.countries.database.Countries
-import com.ltu.m7019e.miniproject.countries.model.Country
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryDetailScreen
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryListScreen
-import com.ltu.m7019e.miniproject.countries.ui.screens.CountrySearchScreen
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountryViewModel
 enum class CountriesScreen(@StringRes val title: Int) {
     List(title = R.string.app_name),
