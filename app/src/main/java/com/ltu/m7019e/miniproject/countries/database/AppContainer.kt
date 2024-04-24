@@ -1,7 +1,7 @@
 package com.ltu.m7019e.miniproject.countries.database
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.ltu.m7019e.miniproject.countries.network.CountriesAPIService
+import com.ltu.m7019e.miniproject.countries.network.CountriesApiService
 import com.ltu.m7019e.miniproject.countries.utils.Constants
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,7 +20,7 @@ class DefaultAppContainer : AppContainer {
         return logging
     }
 
-    val movieDBJson = Json {
+    val countriesJson = Json {
         ignoreUnknownKeys = true
     }
 
@@ -32,15 +32,15 @@ class DefaultAppContainer : AppContainer {
                 .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
                 .build()
         )
-        .addConverterFactory(movieDBJson.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(countriesJson.asConverterFactory("application/json".toMediaType()))
         .baseUrl(Constants.COUNTRIES_BASE_URL)
         .build()
 
-    private val retrofitService: CountriesAPIService by lazy {
-        retrofit.create(CountriesAPIService::class.java)
+    private val retrofitService: CountriesApiService by lazy {
+        retrofit.create(CountriesApiService::class.java)
     }
 
-    override val moviesRepository: CountriesRepository by lazy {
+    override val countriesRepository: CountriesRepository by lazy {
         NetworkCountriesRepository(retrofitService)
     }
 }
