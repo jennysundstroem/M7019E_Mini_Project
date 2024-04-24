@@ -28,53 +28,79 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.ltu.m7019e.miniproject.countries.database.CountriesUIState
 import com.ltu.m7019e.miniproject.countries.model.Country
 import com.ltu.m7019e.miniproject.countries.ui.theme.CountriesTheme
+import com.ltu.m7019e.miniproject.countries.viewmodel.CountryListUiState
 
 @Composable
 fun CountryListScreen(
-    countryList: List<Country>,
+    countryListUiState: CountryListUiState,
     countryListItemClicked : (Country) -> Unit,
     countrySearchButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     Column(modifier = modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(countryList) { country ->
-                CountryListItemCard(
-                    country = country,
-                    modifier = Modifier.padding(8.dp),
-                    countryListItemClicked = countryListItemClicked,
-                )
+            when (countryListUiState) {
+                is CountryListUiState.Success -> {
+                    items(countryListUiState.countries) { country ->
+                        CountryListItemCard(
+                            country = country,
+                            modifier = Modifier.padding(8.dp),
+                            countryListItemClicked = countryListItemClicked,
+                        )
+                    }
+                    /*
+                    Button(
+                        onClick = countrySearchButtonClicked,
+                        modifier = Modifier.fillMaxWidth().padding(16.dp)
+                    ) {
+                        Text(text = "Search Countries")
+                    } */
+                }
+
+                is CountryListUiState.Loading -> {
+                    item {
+                        Text(
+                            text = "Loading...",
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                }
+
+                is CountryListUiState.Error -> {
+                    item {
+                        Text(
+                            text = "Error: Something went wrong!",
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                }
             }
-        }
-        Button(
-            onClick = countrySearchButtonClicked,
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
-        ) {
-            Text(text = "Search Countries")
         }
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryListItemCard(
-    country : Country,
+    country: Country,
     modifier: Modifier = Modifier,
     countryListItemClicked: (Country) -> Unit
-){
+) {
     Card(modifier = modifier
         //.padding(8.dp)
         .fillMaxWidth(),
         onClick = { countryListItemClicked(country) }
-        ) {
+    ) {
         Row {
             Box {
                 AsyncImage(
                     model = country.flagUrl,
-                    contentDescription = country.name,
+                    contentDescription = country.names.common,
                     modifier = modifier
                         .width(140.dp)
                         .height(80.dp),
@@ -88,7 +114,10 @@ fun CountryListItemCard(
                     .weight(1f) // Occupy remaining space in the row
             ) {
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = country.name, style = MaterialTheme.typography.headlineSmall)
+                Text(
+                    text = country.names.common,
+                    style = MaterialTheme.typography.headlineSmall
+                )
                 Spacer(modifier = Modifier.size(8.dp))
             }
         }

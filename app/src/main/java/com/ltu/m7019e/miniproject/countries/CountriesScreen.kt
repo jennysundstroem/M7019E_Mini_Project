@@ -27,7 +27,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryDetailScreen
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryListScreen
+import com.ltu.m7019e.miniproject.countries.ui.screens.CountrySearchScreen
+import com.ltu.m7019e.miniproject.countries.viewmodel.CountriesViewModel
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountryViewModel
+import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
+
 enum class CountriesScreen(@StringRes val title: Int) {
     List(title = R.string.app_name),
     Detail(title = R.string.country_detail),
@@ -41,6 +45,7 @@ fun CountriesAppBar(
     currentScreen: CountriesScreen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
+    //switchScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -67,7 +72,7 @@ fun CountriesAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CountriesApp(viewModel: CountryViewModel = viewModel(),
+fun CountriesApp(
                  navController: NavHostController = rememberNavController()) {
     val backStackEntry by navController.currentBackStackEntryAsState()
 
@@ -80,11 +85,12 @@ fun CountriesApp(viewModel: CountryViewModel = viewModel(),
             CountriesAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                //switchScreen = {}
             )
         }
     ) { innerPadding ->
-        val uiState by viewModel.uiState.collectAsState()
+        val countriesViewModel: CountriesViewModel = viewModel(factory = CountriesViewModel.Factory)
 
         NavHost(
             navController = navController,
@@ -95,12 +101,11 @@ fun CountriesApp(viewModel: CountryViewModel = viewModel(),
         ) {
             composable(route = CountriesScreen.List.name) {
                 CountryListScreen(
-                    countryList = Countries().getCountries(),
+                    countryListUiState = countriesViewModel.countryListUiState,
                     countrySearchButtonClicked = {
-                        viewModel.clearSelectedCountry()
                         navController.navigate(CountriesScreen.Search.name)},
                     countryListItemClicked = { country ->
-                        viewModel.setSelectedCountry(country)
+                        countriesViewModel.setSelectedCountry(country)
                         navController.navigate(CountriesScreen.Detail.name)
                     },
                     modifier = Modifier
@@ -109,19 +114,15 @@ fun CountriesApp(viewModel: CountryViewModel = viewModel(),
                 )
             }
             composable(route = CountriesScreen.Detail.name) {
-                uiState.selectedCountry?.let { selectedCountry ->
                     CountryDetailScreen(
-                        country = selectedCountry
+                        selectedCountryUiState = countriesViewModel.selectedCountryUiState,
                     )
-                }
             }
              composable(route = CountriesScreen.Search.name) {
-                uiState.selectedCountry?.let { selectedCountry ->
-                    CountryDetailScreen(
-                        country = selectedCountry
-                    )
+                 CountrySearchScreen(
+                     countryListUiState = countriesViewModel.countryListUiState,
+                     )
                 }
             }
         }
     }
-}

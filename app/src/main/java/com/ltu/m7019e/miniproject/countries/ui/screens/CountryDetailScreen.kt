@@ -25,76 +25,102 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.ltu.m7019e.miniproject.countries.model.Country
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.ltu.m7019e.miniproject.countries.viewmodel.CountryListUiState
+import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
 
 @Composable
 fun CountryDetailScreen(
-    country: Country,
+    selectedCountryUiState: SelectedCountryUiState,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.size(8.dp))
-        Text(
-            text = country.name,
-            style = MaterialTheme.typography.headlineLarge,
-            textAlign = TextAlign.Center,
-        )
+    when (selectedCountryUiState) {
+        is SelectedCountryUiState.Success -> {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(
+                    text = selectedCountryUiState.country.names.common,
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center,
+                )
 
-        Text(
-            text = country.officialName,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-        )
-        Box(
-            contentAlignment = Alignment.Center
-        ) {
-            AsyncImage(
-                model = country.flagUrl,
-                contentDescription = country.name,
-                modifier = modifier
-                    .width(300.dp)
-                    .height(200.dp),
+                Text(
+                    text = selectedCountryUiState.country.names.common,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
+                Box(
+                    contentAlignment = Alignment.Center
+                ) {
+                    AsyncImage(
+                        model = selectedCountryUiState.country.flagUrl,
+                        contentDescription = selectedCountryUiState.country.names.common,
+                        modifier = modifier
+                            .width(300.dp)
+                            .height(200.dp),
+                    )
+                }
+                Spacer(modifier = Modifier.size(8.dp))
+                Column(
+                    modifier = Modifier.fillMaxWidth(), // Ensure the Column takes full width
+                    horizontalAlignment = Alignment.Start // Align the content to the start (left)
+                ) {
+                    Text(
+                        //TODO
+                        text = "Capital: " //+ selectedCountryUiState.country.capital.toString(),
+                        , style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(3.dp)
+                    )
+                    Text(
+                        text = "Region: " + selectedCountryUiState.country.region,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(3.dp)
+                    )
+                    Text(
+                        text = "Sub-Region: " + selectedCountryUiState.country.subregion,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(3.dp)
+                    )
+                    Text(
+                        text = "Capital: " + selectedCountryUiState.country.capital.joinToString(", "),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(3.dp)
+                    )
+
+                }
+                Spacer(modifier = Modifier.size(10.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                        .padding(8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    //TODO: WebViewSample(url = country.openStreetMapsUrl)
+                }
+            }
+        }
+
+        is SelectedCountryUiState.Loading -> {
+            Text(
+                text = "Loading...",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(16.dp)
             )
         }
-        Spacer(modifier = Modifier.size(8.dp))
-        Column(
-            modifier = Modifier.fillMaxWidth(), // Ensure the Column takes full width
-            horizontalAlignment = Alignment.Start // Align the content to the start (left)
-        ) {
-            Text(
-                text = "Capital: " + country.capital.joinToString(", "),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(3.dp)
-            )
-            Text(
-                text = "Region: " + country.region, style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(3.dp)
-            )
-            Text(
-                text = "Sub-Region: " + country.subregion,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(3.dp)
-            )
-            Text(
-                text = "Capital: " + country.capital.joinToString(", "),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(3.dp)
-            )
 
+        is SelectedCountryUiState.Error -> {
+            Text(
+                text = "Error: Something went wrong!",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(16.dp)
+            )
         }
-        Spacer(modifier = Modifier.size(10.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            WebViewSample(url = country.openStreetMapsUrl)
-        }    }
+    }
 }
+
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewSample(

@@ -11,11 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ltu.m7019e.miniproject.countries.model.Country
+import com.ltu.m7019e.miniproject.countries.viewmodel.CountryListUiState
 
 @Composable
 fun CountrySearchScreen(
-    countryList: List<Country>,
-    countryListItemClicked: (Country) -> Unit,
+    countryListUiState: CountryListUiState,
     modifier: Modifier = Modifier
 ) { /*
     LazyColumn(modifier = modifier) {
