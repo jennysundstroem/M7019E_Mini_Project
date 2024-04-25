@@ -99,7 +99,7 @@ fun CountryListItemCard(
         Row {
             Box {
                 AsyncImage(
-                    model = country.flagUrl,
+                    model = country.flagUrl.flagpng,
                     contentDescription = country.names.common,
                     modifier = modifier
                         .width(140.dp)

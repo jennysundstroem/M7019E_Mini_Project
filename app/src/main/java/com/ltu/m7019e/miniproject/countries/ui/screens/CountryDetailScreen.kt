@@ -55,7 +55,7 @@ fun CountryDetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     AsyncImage(
-                        model = selectedCountryUiState.country.flagUrl,
+                        model = selectedCountryUiState.country.flagUrl.flagpng,
                         contentDescription = selectedCountryUiState.country.names.common,
                         modifier = modifier
                             .width(300.dp)
@@ -84,7 +84,7 @@ fun CountryDetailScreen(
                         modifier = Modifier.padding(3.dp)
                     )
                     Text(
-                        text = "Capital: " + selectedCountryUiState.country.capital.joinToString(", "),
+                        text = "Capital: " + selectedCountryUiState.country.capital.toString(),
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(3.dp)
                     )

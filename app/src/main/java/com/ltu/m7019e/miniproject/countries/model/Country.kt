@@ -5,17 +5,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Country(
-    @SerialName(value = "names")
+    @SerialName(value = "name")
     var names: CountryName,
 
     @SerialName(value = "capital")
-    val capital: List<String>,
+    val capital: List<String>? = null,
 
     @SerialName(value = "region")
     val region: String,
 
     @SerialName(value = "subregion")
-    val subregion: String,
+    val subregion: String? = null,
 
     @SerialName(value = "population")
     val population: Int,
@@ -24,10 +24,10 @@ data class Country(
     val area: Double,
 
     @SerialName(value = "languages")
-    val languages: Map<String, String>,
+    val languages: Map<String, String>? = null,
 
     @SerialName(value = "currencies")
-    val currencies: CountryCurrency,
+    val currencies: Map<String, CountryCurrency>? = null,
 
     @SerialName(value = "flags")
     val flagUrl: CountryFlag,

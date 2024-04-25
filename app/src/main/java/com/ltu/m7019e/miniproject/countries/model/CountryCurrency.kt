@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CountryCurrency (
     @SerialName(value = "name")
-    var name: String,
+    var name: String? = null,
 
     @SerialName(value = "symbol")
-    var symbol: String,
+    var symbol: String? = null,
 )
