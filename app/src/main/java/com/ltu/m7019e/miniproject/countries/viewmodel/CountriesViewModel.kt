@@ -48,7 +48,7 @@ class CountriesViewModel(private val countriesRepository: CountriesRepository) :
         viewModelScope.launch {
             countryListUiState = CountryListUiState.Loading
             countryListUiState = try {
-                CountryListUiState.Success(countriesRepository.getAllCountries().countries)
+                CountryListUiState.Success(countriesRepository.getAllCountries())
             } catch (e: IOException) {
                 CountryListUiState.Error
             } catch (e: HttpException) {
