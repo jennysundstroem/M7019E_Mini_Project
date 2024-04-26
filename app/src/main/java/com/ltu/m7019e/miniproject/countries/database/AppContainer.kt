@@ -1,5 +1,6 @@
 package com.ltu.m7019e.miniproject.countries.database
 
+import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.ltu.m7019e.miniproject.countries.network.CountriesApiService
 import com.ltu.m7019e.miniproject.countries.utils.Constants
@@ -10,9 +11,10 @@ import retrofit2.Retrofit
 
 interface AppContainer {
     val countriesRepository: CountriesRepository
+    val savedCountriesRepository: SavedCountriesRepository
 }
 
-class DefaultAppContainer : AppContainer {
+class DefaultAppContainer(private val context: Context) : AppContainer {
 
     fun getLoggerInterceptor(): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor()
@@ -42,5 +44,8 @@ class DefaultAppContainer : AppContainer {
 
     override val countriesRepository: CountriesRepository by lazy {
         NetworkCountriesRepository(retrofitService)
+    }
+    override val savedCountriesRepository: SavedCountriesRepository by lazy {
+        FavoriteCountriesRepository(CountryDatabase.getDatabase(context).countryDao())
     }
 }

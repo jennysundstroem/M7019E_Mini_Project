@@ -116,6 +116,7 @@ fun CountriesApp(
             composable(route = CountriesScreen.Detail.name) {
                     CountryDetailScreen(
                         selectedCountryUiState = countriesViewModel.selectedCountryUiState,
+                        countriesViewModel = countriesViewModel,
                     )
             }
              composable(route = CountriesScreen.Search.name) {

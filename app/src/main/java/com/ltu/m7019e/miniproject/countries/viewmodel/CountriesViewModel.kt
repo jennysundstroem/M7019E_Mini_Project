@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.ltu.m7019e.miniproject.countries.database.CountriesRepository
 import com.ltu.m7019e.miniproject.countries.model.Country
 import com.ltu.m7019e.miniproject.countries.CountriesApplication
+import com.ltu.m7019e.miniproject.countries.database.SavedCountriesRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,6 +19,7 @@ import java.io.IOException
 sealed interface SelectedCountryUiState {
     data class Success(
         val country: Country,
+        val isFavorite : Boolean
     )
         : SelectedCountryUiState
 
@@ -32,7 +34,7 @@ sealed interface CountryListUiState {
     object Loading : CountryListUiState
 }
 
-class CountriesViewModel(private val countriesRepository: CountriesRepository) : ViewModel() {
+class CountriesViewModel(private val countriesRepository: CountriesRepository, private val savedCountriesRepository : SavedCountriesRepository) : ViewModel() {
 
     var countryListUiState: CountryListUiState by mutableStateOf(CountryListUiState.Loading)
         private set
@@ -61,7 +63,7 @@ class CountriesViewModel(private val countriesRepository: CountriesRepository) :
         viewModelScope.launch {
             selectedCountryUiState = SelectedCountryUiState.Loading
             selectedCountryUiState = try {
-                SelectedCountryUiState.Success(country)
+                SelectedCountryUiState.Success(country, savedCountriesRepository.getCountry(country.names) != null)
             } catch (e: IOException) {
                 SelectedCountryUiState.Error
             } catch (e: HttpException) {
@@ -70,12 +72,39 @@ class CountriesViewModel(private val countriesRepository: CountriesRepository) :
         }
     }
 
+    fun getSavedCountries() {
+        viewModelScope.launch {
+            countryListUiState = CountryListUiState.Loading
+            countryListUiState = try {
+                CountryListUiState.Success(savedCountriesRepository.getSavedCountries())
+            } catch (e: IOException) {
+                CountryListUiState.Error
+            } catch (e: HttpException) {
+                CountryListUiState.Error
+            }
+        }
+    }
+
+    fun saveCountry(country: Country) {
+        viewModelScope.launch {
+            savedCountriesRepository.insertCountry(country)
+            selectedCountryUiState = SelectedCountryUiState.Success(country, true)
+        }
+    }
+
+    fun deleteCountry(country: Country) {
+        viewModelScope.launch {
+            savedCountriesRepository.deleteCountry(country)
+            selectedCountryUiState = SelectedCountryUiState.Success(country, false)
+        }
+    }
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as CountriesApplication)
                 val countriesRepository = application.container.countriesRepository
-                CountriesViewModel(countriesRepository = countriesRepository)
+                val savedCountriesRepository = application.container.savedCountriesRepository
+                CountriesViewModel(countriesRepository = countriesRepository, savedCountriesRepository = savedCountriesRepository)
             }
         }
     }

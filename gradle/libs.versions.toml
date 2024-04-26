@@ -2,6 +2,7 @@
 agp = "8.3.1"
 coil = "2.6.0"
 coilKtCoil = "1.4.0"
+coreKtxVersion = "1.13.0"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -17,11 +18,16 @@ navigationRuntimeKtx = "2.7.7"
 navigationCompose = "2.7.7"
 retrofit = "2.9.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
+roomKtx = "2.6.0"
+roomRuntime = "2.6.0"
 web = "1.0.0-alpha10"
 webkit = "1.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx-v1130 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-web = { module = "androidx.compose.web:web", version.ref = "web" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }

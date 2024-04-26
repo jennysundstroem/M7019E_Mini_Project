@@ -25,14 +25,19 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.ltu.m7019e.miniproject.countries.model.Country
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Switch
+import com.ltu.m7019e.miniproject.countries.viewmodel.CountriesViewModel
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountryListUiState
 import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
 
 @Composable
 fun CountryDetailScreen(
     selectedCountryUiState: SelectedCountryUiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    countriesViewModel: CountriesViewModel
 ) {
+    val selectedCountryUiState = countriesViewModel.selectedCountryUiState
     when (selectedCountryUiState) {
         is SelectedCountryUiState.Success -> {
             Column(
@@ -99,6 +104,18 @@ fun CountryDetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     //TODO: WebViewSample(url = country.openStreetMapsUrl)
+                }
+                Row {
+                    Text(
+                        text = "Favorite",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Switch(checked = selectedCountryUiState.isFavorite, onCheckedChange = {
+                        if (it)
+                        countriesViewModel.saveCountry(selectedCountryUiState.country)
+                        else
+                            countriesViewModel.deleteCountry(selectedCountryUiState.country)
+                    })
                 }
             }
         }

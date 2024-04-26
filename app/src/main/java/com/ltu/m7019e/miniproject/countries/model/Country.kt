@@ -1,10 +1,14 @@
 package com.ltu.m7019e.miniproject.countries.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Entity(tableName = "favorite_countries")
 data class Country(
+    @PrimaryKey
     @SerialName(value = "name")
     var names: CountryName,
 
