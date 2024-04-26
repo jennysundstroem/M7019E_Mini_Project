@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.ltu.m7019e.miniproject.countries.model.Country
+import com.ltu.m7019e.miniproject.countries.model.CountryName
 
 @Dao
 interface CountryDao {
@@ -15,8 +16,8 @@ interface CountryDao {
     suspend fun insertFavoriteCountry(country: Country)
 
     @Query("SELECT * FROM favorite_countries WHERE names = :name")
-    suspend fun getCountry(name: String): Country
+    suspend fun getCountry(name : CountryName): Country
 
     @Query("DELETE FROM favorite_countries WHERE names = :name")
-    suspend fun deleteFavoriteCountry(name: String)
+    suspend fun deleteFavoriteCountry(name: Country)
 }

@@ -94,7 +94,7 @@ class CountriesViewModel(private val countriesRepository: CountriesRepository, p
 
     fun deleteCountry(country: Country) {
         viewModelScope.launch {
-            savedCountriesRepository.deleteCountry(country)
+            savedCountriesRepository.deleteCountry(country.names)
             selectedCountryUiState = SelectedCountryUiState.Success(country, false)
         }
     }
