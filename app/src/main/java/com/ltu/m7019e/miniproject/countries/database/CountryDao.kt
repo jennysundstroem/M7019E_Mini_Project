@@ -19,5 +19,5 @@ interface CountryDao {
     suspend fun getCountry(name : CountryName): Country
 
     @Query("DELETE FROM favorite_countries WHERE names = :name")
-    suspend fun deleteFavoriteCountry(name: Country)
+    suspend fun deleteFavoriteCountry(name: CountryName)
 }

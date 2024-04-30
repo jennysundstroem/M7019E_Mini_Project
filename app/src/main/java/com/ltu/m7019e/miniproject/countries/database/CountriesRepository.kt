@@ -26,7 +26,7 @@ interface SavedCountriesRepository {
     suspend fun getSavedCountries(): List<Country>
     suspend fun insertCountry(country: Country)
     suspend fun getCountry(name: CountryName): Country
-    suspend fun deleteCountry(country: Country)
+    suspend fun deleteCountry(country: CountryName)
 }
 
 class FavoriteCountriesRepository(private val countriesDao: CountryDao) : SavedCountriesRepository {
@@ -42,7 +42,7 @@ class FavoriteCountriesRepository(private val countriesDao: CountryDao) : SavedC
         return countriesDao.getCountry(name)
     }
 
-    override suspend fun deleteCountry(country: Country) {
+    override suspend fun deleteCountry(country: CountryName) {
         countriesDao.deleteFavoriteCountry(country)
     }
 
