@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,89 +36,87 @@ import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
 @Composable
 fun CountryDetailScreen(
     selectedCountryUiState: SelectedCountryUiState,
-    modifier: Modifier = Modifier,
-    countriesViewModel: CountriesViewModel
+    modifier: Modifier,
+    countriesViewModel: CountriesViewModel,
 ) {
     val selectedCountryUiState = countriesViewModel.selectedCountryUiState
     when (selectedCountryUiState) {
         is SelectedCountryUiState.Success -> {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
+            LazyColumn(
+                modifier = modifier,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = selectedCountryUiState.country.names.common,
-                    style = MaterialTheme.typography.headlineLarge,
-                    textAlign = TextAlign.Center,
-                )
-
-                Text(
-                    text = selectedCountryUiState.country.names.common,
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
-                )
-                Box(
-                    contentAlignment = Alignment.Center
-                ) {
-                    AsyncImage(
-                        model = selectedCountryUiState.country.flagUrl.flagpng,
-                        contentDescription = selectedCountryUiState.country.names.common,
-                        modifier = modifier
-                            .width(300.dp)
-                            .height(200.dp),
-                    )
-                }
-                Spacer(modifier = Modifier.size(8.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth(), // Ensure the Column takes full width
-                    horizontalAlignment = Alignment.Start // Align the content to the start (left)
-                ) {
+                item{
+                    Spacer(modifier = Modifier.size(8.dp))
                     Text(
-                        //TODO
-                        text = "Capital: " //+ selectedCountryUiState.country.capital.toString(),
-                        , style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(3.dp)
-                    )
-                    Text(
-                        text = "Region: " + selectedCountryUiState.country.region,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(3.dp)
-                    )
-                    Text(
-                        text = "Sub-Region: " + selectedCountryUiState.country.subregion,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(3.dp)
-                    )
-                    Text(
-                        text = "Capital: " + selectedCountryUiState.country.capital.toString(),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(3.dp)
+                        text = selectedCountryUiState.country.names.common,
+                        style = MaterialTheme.typography.headlineLarge,
+                        textAlign = TextAlign.Center,
                     )
 
-                }
-                Spacer(modifier = Modifier.size(10.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp)
-                        .padding(8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    //TODO: WebViewSample(url = country.openStreetMapsUrl)
-                }
-                Row {
                     Text(
-                        text = "Favorite",
-                        style = MaterialTheme.typography.bodySmall,
+                        text = selectedCountryUiState.country.names.common,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
                     )
-                    Switch(checked = selectedCountryUiState.isFavorite, onCheckedChange = {
-                        if (it)
-                        countriesViewModel.saveCountry(selectedCountryUiState.country)
-                        else
-                            countriesViewModel.deleteCountry(selectedCountryUiState.country)
-                    })
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AsyncImage(
+                            model = selectedCountryUiState.country.flagUrl.flagpng,
+                            contentDescription = selectedCountryUiState.country.names.common,
+                            modifier = modifier
+                                .width(300.dp)
+                                .height(200.dp),
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Column(
+                        modifier = Modifier.fillMaxWidth(), // Ensure the Column takes full width
+                        horizontalAlignment = Alignment.Start // Align the content to the start (left)
+                    ) {
+                        Text(
+                            //TODO
+                            text = "Capital: " + selectedCountryUiState.country.capital.toString(),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(3.dp)
+                        )
+                        Text(
+                            text = "Region: " + selectedCountryUiState.country.region,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(3.dp)
+                        )
+                        Text(
+                            text = "Sub-Region: " + selectedCountryUiState.country.subregion,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(3.dp)
+                        )
+
+                    }
+                    Spacer(modifier = Modifier.size(10.dp))
+                    /*Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .padding(8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        //TODO: WebViewSample(url = country.openStreetMapsUrl)
+                    } */
+                    Row {
+                        Text(
+                            text = "Favorite",
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                        Switch(checked = selectedCountryUiState.isFavorite, onCheckedChange = {
+                            if (it)
+                                countriesViewModel.saveCountry(selectedCountryUiState.country)
+                            else
+                                countriesViewModel.deleteCountry(selectedCountryUiState.country)
+                        })
+                    }
                 }
+
             }
         }
 

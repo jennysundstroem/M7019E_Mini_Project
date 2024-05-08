@@ -56,6 +56,7 @@ class CountriesViewModel(private val countriesRepository: CountriesRepository, p
             } catch (e: HttpException) {
                 CountryListUiState.Error
             }
+            selectedCountryUiState = SelectedCountryUiState.Success(countriesRepository.getAllCountries().first(), false)
         }
     }
 
@@ -82,6 +83,7 @@ class CountriesViewModel(private val countriesRepository: CountriesRepository, p
             } catch (e: HttpException) {
                 CountryListUiState.Error
             }
+            selectedCountryUiState = SelectedCountryUiState.Success(savedCountriesRepository.getSavedCountries().first(), true)
         }
     }
 
