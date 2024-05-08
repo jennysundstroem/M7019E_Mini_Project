@@ -83,6 +83,7 @@ class CountriesViewModel(
             else {
                 getAllCountries()
             }
+            selectedCountryUiState = SelectedCountryUiState.Success(countriesRepository.getAllCountries().first(), false)
         }
     }
 
@@ -111,6 +112,7 @@ class CountriesViewModel(
             } catch (e: HttpException) {
                 CountryListUiState.Error
             }
+            selectedCountryUiState = SelectedCountryUiState.Success(savedCountriesRepository.getSavedCountries().first(), true)
         }
     }
 
