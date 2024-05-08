@@ -46,7 +46,7 @@ class CountriesViewModel(private val countriesRepository: CountriesRepository, p
         getAllCountries()
     }
 
-    private fun getAllCountries() {
+    fun getAllCountries() {
         viewModelScope.launch {
             countryListUiState = CountryListUiState.Loading
             countryListUiState = try {
