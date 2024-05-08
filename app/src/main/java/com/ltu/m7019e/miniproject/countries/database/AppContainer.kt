@@ -46,6 +46,6 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
         NetworkCountriesRepository(retrofitService)
     }
     override val savedCountriesRepository: SavedCountriesRepository by lazy {
-        FavoriteCountriesRepository(CountryDatabase.getDatabase(context).countryDao())
+        FavoriteCountriesRepository(CountryDatabase.getDatabase(context).countryDao(), context)
     }
 }

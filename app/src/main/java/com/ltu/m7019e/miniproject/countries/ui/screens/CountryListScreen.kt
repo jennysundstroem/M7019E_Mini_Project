@@ -79,6 +79,8 @@ fun CountryListScreen(
                         )
                     }
                 }
+
+                CountryListUiState.NoNetwork -> TODO()
             }
         }
     }

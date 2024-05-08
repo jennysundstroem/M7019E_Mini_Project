@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Entity(tableName = "favorite_countries")
+@Entity(tableName = "countries")
 data class Country(
     @PrimaryKey
     @SerialName(value = "name")
@@ -35,6 +35,10 @@ data class Country(
 
     @SerialName(value = "flags")
     val flagUrl: CountryFlag,
+
+    var isFavourite: Boolean = false,
+
+    var isCached: Boolean = false
 
     //TODO: Fix these
     //@SerialName(value = "googleMapsUrl")

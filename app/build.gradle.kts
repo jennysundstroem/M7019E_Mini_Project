@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     implementation(libs.coil.compose)
     //noinspection UseTomlInstead
