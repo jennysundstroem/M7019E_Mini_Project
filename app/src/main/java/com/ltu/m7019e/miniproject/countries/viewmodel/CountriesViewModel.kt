@@ -1,6 +1,7 @@
 package com.ltu.m7019e.miniproject.countries.viewmodel
 
 import ConnectionManager
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +14,7 @@ import com.ltu.m7019e.miniproject.countries.database.CountriesRepository
 import com.ltu.m7019e.miniproject.countries.model.Country
 import com.ltu.m7019e.miniproject.countries.CountriesApplication
 import com.ltu.m7019e.miniproject.countries.database.SavedCountriesRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -50,6 +52,9 @@ class CountriesViewModel(
     var selectedCountryUiState: SelectedCountryUiState by mutableStateOf(SelectedCountryUiState.Loading)
         private set
 
+    private var lastCached : String = ""
+
+
     init {
         scheduleApiWorker("getAllCountries")
         getAllCountries()
@@ -57,14 +62,29 @@ class CountriesViewModel(
 
     fun getAllCountries() {
         viewModelScope.launch {
-            countryListUiState = CountryListUiState.Loading
-            countryListUiState = try {
-                CountryListUiState.Success(countriesRepository.getAllCountries())
-            } catch (e: IOException) {
-                CountryListUiState.Error
-            } catch (e: HttpException) {
-                CountryListUiState.Error
+            if(lastCached == "allCountries") {
+                Log.w("myApp", "no network, but cached")
+                countryListUiState = CountryListUiState.Success(savedCountriesRepository.getCachedCountries())
             }
+            else if (connectionManager.isNetworkAvailable) {
+                Log.w("myApp", "has network, getting countries");
+                countryListUiState = CountryListUiState.Loading
+                scheduleApiWorker("getAllCountries")
+                lastCached = "allCountries"
+                countryListUiState = try {
+                    CountryListUiState.Success(countriesRepository.getAllCountries())
+                } catch (e: IOException) {
+                    CountryListUiState.Error
+                } catch (e: HttpException) {
+                    CountryListUiState.Error
+                }
+            } else {
+                Log.w("myApp", "no network, nothing cached")
+                countryListUiState = CountryListUiState.NoNetwork
+                delay(2000)
+                getAllCountries()
+            }
+
         }
     }
 

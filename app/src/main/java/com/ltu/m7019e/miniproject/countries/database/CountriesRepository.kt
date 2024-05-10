@@ -76,11 +76,11 @@ class FavoriteCountriesRepository(private val countriesDao: CountryDao, context:
     }
 
     override suspend fun deleteCachedCountries() {
-        TODO("Not yet implemented")
+        return countriesDao.deleteCachedCountries()
     }
 
     override suspend fun getCachedCountries(): List<Country> {
-        TODO("Not yet implemented")
+        return countriesDao.getCachedCountries()
     }
 
     override fun scheduleApiWorker(action: String) {
