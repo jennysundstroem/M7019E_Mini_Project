@@ -82,7 +82,6 @@ class CountriesViewModel(
                 Log.w("myApp", "no network, nothing cached")
                 countryListUiState = CountryListUiState.NoNetwork
                 delay(2000)
-                getAllCountries()
             }
 
         }
