@@ -30,5 +30,7 @@ interface CountryDao {
     suspend fun deleteCachedCountries()
     @Query("SELECT * FROM countries WHERE isCached = 1")
     suspend fun getCachedCountries(): List<Country>
+    @Query("SELECT COUNT(*) > 0 FROM countries WHERE names = :name AND isFavourite = 1")
+    suspend fun isFavorite(name: CountryName): Boolean
 
 }

@@ -40,6 +40,7 @@ fun CountryDetailScreen(
     val selectedCountryUiState = countriesViewModel.selectedCountryUiState
     when (selectedCountryUiState) {
         is SelectedCountryUiState.Success -> {
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -113,8 +114,7 @@ fun CountryDetailScreen(
                     Switch(checked = selectedCountryUiState.isFavorite, onCheckedChange = {
                         if (it)
                         countriesViewModel.saveCountry(selectedCountryUiState.country)
-                        else
-                            countriesViewModel.deleteCountry(selectedCountryUiState.country)
+                        else countriesViewModel.deleteCountry(selectedCountryUiState.country)
                     })
                 }
             }

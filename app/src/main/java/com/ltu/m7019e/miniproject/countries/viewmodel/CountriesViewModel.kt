@@ -42,7 +42,7 @@ sealed interface CountryListUiState {
 
 class CountriesViewModel(
     private val countriesRepository: CountriesRepository,
-    private val savedCountriesRepository : SavedCountriesRepository,
+    val savedCountriesRepository : SavedCountriesRepository,
     private val connectionManager: ConnectionManager
 ) : ViewModel() {
 
@@ -61,10 +61,15 @@ class CountriesViewModel(
     }
 
     fun getAllCountries() {
+        Log.w("myApp", "getAllCountries")
+
         viewModelScope.launch {
             if(lastCached == "allCountries") {
                 Log.w("myApp", "no network, but cached")
                 countryListUiState = CountryListUiState.Success(savedCountriesRepository.getCachedCountries())
+                //countryListUiState = CountryListUiState.Success(countriesRepository.getAllCountries())
+                //CountryListUiState.Success(savedCountriesRepository.getFavouriteCountries())
+
             }
             else if (connectionManager.isNetworkAvailable) {
                 Log.w("myApp", "has network, getting countries");
@@ -91,7 +96,10 @@ class CountriesViewModel(
         viewModelScope.launch {
             selectedCountryUiState = SelectedCountryUiState.Loading
             selectedCountryUiState = try {
-                SelectedCountryUiState.Success(country, savedCountriesRepository.getCountry(country.names) != null)
+                SelectedCountryUiState.Success(country, savedCountriesRepository.isFavorite(
+                    country.names
+
+                ))
             } catch (e: IOException) {
                 SelectedCountryUiState.Error
             } catch (e: HttpException) {
