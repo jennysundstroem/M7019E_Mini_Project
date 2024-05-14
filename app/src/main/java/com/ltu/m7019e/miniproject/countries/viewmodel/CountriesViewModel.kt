@@ -112,7 +112,7 @@ class CountriesViewModel(
             } catch (e: HttpException) {
                 CountryListUiState.Error
             }
-            selectedCountryUiState = SelectedCountryUiState.Success(savedCountriesRepository.getSavedCountries().first(), true)
+            selectedCountryUiState = SelectedCountryUiState.Success(savedCountriesRepository.getFavouriteCountries().first(), true)
         }
     }
 
