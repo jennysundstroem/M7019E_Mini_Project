@@ -61,6 +61,7 @@ class CountriesViewModel(
     }
 
     fun getAllCountries() {
+        Log.w("myApp", "Test")
         viewModelScope.launch {
             if(lastCached == "allCountries") {
                 Log.w("myApp", "no network, but cached")
@@ -78,12 +79,10 @@ class CountriesViewModel(
                 } catch (e: HttpException) {
                     CountryListUiState.Error
                 }
-            } else {
-                Log.w("myApp", "no network, nothing cached")
-                countryListUiState = CountryListUiState.NoNetwork
-                delay(2000)
             }
-
+            else {
+                getAllCountries()
+            }
         }
     }
 
@@ -91,7 +90,9 @@ class CountriesViewModel(
         viewModelScope.launch {
             selectedCountryUiState = SelectedCountryUiState.Loading
             selectedCountryUiState = try {
-                SelectedCountryUiState.Success(country, savedCountriesRepository.getCountry(country.names) != null)
+                SelectedCountryUiState.Success(country, savedCountriesRepository.isFavorite(
+                    country.names
+                ))
             } catch (e: IOException) {
                 SelectedCountryUiState.Error
             } catch (e: HttpException) {
@@ -117,7 +118,7 @@ class CountriesViewModel(
         viewModelScope.launch {
             savedCountriesRepository.insertCountry(country)
             savedCountriesRepository.setFavouriteCountry(country.names)
-            selectedCountryUiState = SelectedCountryUiState.Success(country, true)
+            selectedCountryUiState = SelectedCountryUiState.Success(country, isFavorite = true)
         }
     }
 

@@ -46,6 +46,8 @@ interface SavedCountriesRepository {
 
     abstract fun scheduleApiWorker(action: String)
 
+    suspend fun isFavorite(name: CountryName): Boolean
+
 
 }
 
@@ -89,6 +91,10 @@ class FavoriteCountriesRepository(private val countriesDao: CountryDao, context:
             .setInputData(inputData)
             .build()
         workManager.enqueue(workRequest)
+    }
+
+    override suspend fun isFavorite(name: CountryName): Boolean {
+        return countriesDao.isFavorite(name)
     }
 
 
