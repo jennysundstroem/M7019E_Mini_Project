@@ -67,8 +67,6 @@ class CountriesViewModel(
             if(lastCached == "allCountries") {
                 Log.w("myApp", "no network, but cached")
                 countryListUiState = CountryListUiState.Success(savedCountriesRepository.getCachedCountries())
-                //countryListUiState = CountryListUiState.Success(countriesRepository.getAllCountries())
-                //CountryListUiState.Success(savedCountriesRepository.getFavouriteCountries())
 
             }
             else if (connectionManager.isNetworkAvailable) {

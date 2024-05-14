@@ -44,6 +44,9 @@ class CountryConverters {
 
     @TypeConverter
     fun toCapital(capital: String): List<String> {
+        if (capital.isNullOrBlank()) {
+            return emptyList()
+        }
         return capital.split(",")
     }
     @TypeConverter
@@ -53,6 +56,9 @@ class CountryConverters {
 
     @TypeConverter
     fun toLanguages(languages: String): Map<String, String> {
+        if (languages.isNullOrBlank()) {
+            return emptyMap()
+        }
         return languages.split(";").map {
             val parts = it.split(",")
             parts[0] to parts[1]
@@ -65,9 +71,12 @@ class CountryConverters {
     }
     @TypeConverter
     fun toCurrencies(currencies: String): Map<String, CountryCurrency> {
+        if (currencies.isNullOrBlank()) {
+            return emptyMap()
+        }
         return currencies.split(";").map {
             val parts = it.split(",")
-            parts[0] to CountryCurrency(parts[0], parts[1])
+            parts[0] to CountryCurrency(parts[1], parts[2])
         }.toMap()
     }
 }
