@@ -79,4 +79,20 @@ class CountryConverters {
             parts[0] to CountryCurrency(parts[1], parts[2])
         }.toMap()
     }
+
+    @TypeConverter
+    fun fromCountryMap(countryMap: CountryMap): String {
+        val googleMapsUrl = countryMap.googleMapsUrl ?: ""
+        val openStreetMapsUrl = countryMap.openStreetMapsUrl ?: ""
+        return "$googleMapsUrl,$openStreetMapsUrl"
+    }
+
+    @TypeConverter
+    fun toCountryMap(countryMap: String): CountryMap {
+        if (countryMap.isNullOrBlank()) {
+            return CountryMap()
+        }
+        val parts = countryMap.split(",")
+        return CountryMap(parts[0], parts[1])
+    }
 }

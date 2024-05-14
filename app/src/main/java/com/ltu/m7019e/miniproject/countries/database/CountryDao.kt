@@ -35,4 +35,5 @@ interface CountryDao {
 
     @Query("SELECT COUNT(*) > 0 FROM countries WHERE names = :name AND isFavourite = 1")
     suspend fun isFavorite(name: CountryName): Boolean
+
 }

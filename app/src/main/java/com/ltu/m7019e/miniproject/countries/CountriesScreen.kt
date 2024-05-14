@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,17 +38,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryDetailScreen
 import com.ltu.m7019e.miniproject.countries.ui.screens.CountryListScreen
-import com.ltu.m7019e.miniproject.countries.ui.screens.CountrySearchScreen
+import com.ltu.m7019e.miniproject.countries.ui.screens.CountryMapScreen
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountriesViewModel
-import com.ltu.m7019e.miniproject.countries.viewmodel.CountryListUiState
-import com.ltu.m7019e.miniproject.countries.viewmodel.CountryViewModel
-import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
 
 enum class CountriesScreen(@StringRes val title: Int) {
     List(title = R.string.app_name),
     Detail(title = R.string.country_detail),
     Saved(title = R.string.saved_countries),
-    Search(title = R.string.search_country)
+    Map(title = R.string.map_country)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -160,7 +155,7 @@ fun CountriesApp(
                             CountryListScreen(
                                 countryListUiState = countriesViewModel.countryListUiState,
                                 countrySearchButtonClicked = {
-                                    navController.navigate(CountriesScreen.Search.name)
+                                    navController.navigate(CountriesScreen.Map.name)
                                 },
                                 countryListItemClicked = { country ->
                                     countriesViewModel.setSelectedCountry(country)
@@ -177,17 +172,19 @@ fun CountriesApp(
                             }*/
                             CountryDetailScreen(
                                 selectedCountryUiState = countriesViewModel.selectedCountryUiState,
-                                countriesViewModel = countriesViewModel,
-                                modifier = Modifier.scale(0.8f)
-
-                            )
+                                modifier = Modifier.scale(0.8f),
+                                countriesViewModel = countriesViewModel
+                            ) {
+                                countriesViewModel.setSelectedCountry(it)
+                                navController.navigate(com.ltu.m7019e.miniproject.countries.CountriesScreen.Map.name)
+                            }
                         }
                     }
                 } else {
                     CountryListScreen(
                         countryListUiState = countriesViewModel.countryListUiState,
                         countrySearchButtonClicked = {
-                            navController.navigate(CountriesScreen.Search.name)
+                            navController.navigate(CountriesScreen.Map.name)
                         },
                         countryListItemClicked = { country ->
                             countriesViewModel.setSelectedCountry(country)
@@ -204,12 +201,16 @@ fun CountriesApp(
                     selectedCountryUiState = countriesViewModel.selectedCountryUiState,
                     countriesViewModel = countriesViewModel,
                     modifier = Modifier
-                )
+                ) {
+                    countriesViewModel.setSelectedCountry(it)
+                    navController.navigate(CountriesScreen.Map.name)
+                }
             }
-            composable(route = CountriesScreen.Search.name) {
-                CountrySearchScreen(
-                    countryListUiState = countriesViewModel.countryListUiState,
-                )
+            composable(route = CountriesScreen.Map.name) {
+                CountryMapScreen(
+                    selectedCountryUiState = countriesViewModel.selectedCountryUiState,
+                    countriesViewModel = countriesViewModel,
+                    modifier = Modifier)
             }
         }
     }

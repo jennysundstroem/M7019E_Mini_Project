@@ -36,15 +36,13 @@ data class Country(
     @SerialName(value = "flags")
     val flagUrl: CountryFlag,
 
+    @SerialName(value = "maps")
+    val maps: CountryMap,
+
     var isFavourite: Boolean = false,
 
     var isCached: Boolean = false
 
-    //TODO: Fix these
-    //@SerialName(value = "googleMapsUrl")
-    //val googleMapsUrl: String,
 
-    //@SerialName(value = "openStreetMapsUrl")
-    //val openStreetMapsUrl: String
 )
 
