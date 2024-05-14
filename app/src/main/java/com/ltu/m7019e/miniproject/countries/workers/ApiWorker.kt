@@ -16,7 +16,6 @@ class ApiWorker(
             when (action) {
                 "getAllCountries" -> {
                     val countries = container.countriesRepository.getAllCountries()
-                    container.savedCountriesRepository.deleteCachedCountries()
                     //for all movies in the list, save them to the database
                     countries.forEach { country ->
                         container.savedCountriesRepository.insertCountry(country)
