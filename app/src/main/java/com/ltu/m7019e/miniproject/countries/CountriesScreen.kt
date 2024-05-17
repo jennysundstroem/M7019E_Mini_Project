@@ -2,8 +2,11 @@ package com.ltu.m7019e.miniproject.countries
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -162,7 +165,8 @@ fun CountriesApp(
                                 },
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .padding(8.dp)
+                                    .padding(8.dp),
+                                countriesViewModel = countriesViewModel
                             )
                         }
                         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.TopStart) {
@@ -192,18 +196,65 @@ fun CountriesApp(
                         },
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp)
+                            .padding(16.dp),
+                        countriesViewModel = countriesViewModel
                     )
                 }
             }
             composable(route = CountriesScreen.Detail.name) {
-                CountryDetailScreen(
-                    selectedCountryUiState = countriesViewModel.selectedCountryUiState,
-                    countriesViewModel = countriesViewModel,
-                    modifier = Modifier
-                ) {
-                    countriesViewModel.setSelectedCountry(it)
-                    navController.navigate(CountriesScreen.Map.name)
+                if (isLandscape) {
+                    Row(Modifier.fillMaxSize()) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            CountryDetailScreen(
+                                selectedCountryUiState = countriesViewModel.selectedCountryUiState,
+                                countriesViewModel = countriesViewModel,
+                                modifier = Modifier
+                            ) {
+                                countriesViewModel.setSelectedCountry(it)
+                                navController.navigate(CountriesScreen.Map.name)
+                            }
+                        }
+                        Box(modifier = Modifier.weight(1f)) {
+                            CountryListScreen(
+                                countryListUiState = countriesViewModel.countryListUiState,
+                                countrySearchButtonClicked = {
+                                    navController.navigate(CountriesScreen.Map.name)
+                                },
+                                countryListItemClicked = { country ->
+                                    countriesViewModel.setSelectedCountry(country)
+                                },
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp),
+                                countriesViewModel = countriesViewModel
+                            )
+                        }
+                    }
+                } else {
+                    Column {
+                        CountryDetailScreen(
+                            selectedCountryUiState = countriesViewModel.selectedCountryUiState,
+                            countriesViewModel = countriesViewModel,
+                            modifier = Modifier
+                        ) {
+                            countriesViewModel.setSelectedCountry(it)
+                            navController.navigate(CountriesScreen.Map.name)
+                        }
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        CountryListScreen(
+                            countryListUiState = countriesViewModel.countryListUiState,
+                            countrySearchButtonClicked = {
+                                navController.navigate(CountriesScreen.Map.name)
+                            },
+                            countryListItemClicked = { country ->
+                                countriesViewModel.setSelectedCountry(country)
+                            },
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(8.dp),
+                            countriesViewModel = countriesViewModel
+                        )
+                    }
                 }
             }
             composable(route = CountriesScreen.Map.name) {
