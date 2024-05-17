@@ -2,7 +2,7 @@ package com.ltu.m7019e.miniproject.countries.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val md_theme_light_primary = Color(0xFFFFCDD2)
+val md_theme_light_primary = Color(0xFFB71C1C)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFB71C1C)
 val md_theme_light_onPrimaryContainer = Color(0xFFFFEBEE)
