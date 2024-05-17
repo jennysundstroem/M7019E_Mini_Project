@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -48,13 +51,17 @@ fun CountryListScreen(
     countryListItemClicked: (Country) -> Unit,
     countrySearchButtonClicked: () -> Unit,
     countriesViewModel: CountriesViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    columns: Int
+
 ) {
+
     Column(modifier = modifier.fillMaxSize()) {
-        LazyColumn(modifier = Modifier.weight(1f)) {
+        LazyVerticalGrid(modifier = Modifier.weight(1f),
+            columns = GridCells.Fixed(columns)) {
             when (countryListUiState) {
                 is CountryListUiState.Success -> {
-                    items(countryListUiState.countries) { country ->
+                    items((countryListUiState as CountryListUiState.Success).countries) { country ->
                         CountryListItemCard(
                             country = country,
                             modifier = Modifier.padding(8.dp),
