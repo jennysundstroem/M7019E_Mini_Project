@@ -115,7 +115,13 @@ class CountriesViewModel(
             } catch (e: HttpException) {
                 CountryListUiState.Error
             }
-            selectedCountryUiState = SelectedCountryUiState.Success(savedCountriesRepository.getFavouriteCountries().first(), true)
+            val favouriteCountries = savedCountriesRepository.getFavouriteCountries()
+            if (favouriteCountries.isNotEmpty()) {
+                selectedCountryUiState = SelectedCountryUiState.Success(favouriteCountries.first(), true)
+            } else {
+
+                selectedCountryUiState = SelectedCountryUiState.Error
+            }
         }
     }
 

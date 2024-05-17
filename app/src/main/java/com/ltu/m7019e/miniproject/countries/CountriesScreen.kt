@@ -156,54 +156,27 @@ fun CountriesApp(
                 .padding(innerPadding)
         ) {
             composable(route = CountriesScreen.List.name) {
+                var columns : Int
                 if (isLandscape) {
-                    Row(Modifier.fillMaxSize()) { // Add padding to the top
-                        Box(modifier = Modifier.weight(1f)) {
-                            CountryListScreen(
-                                countryListUiState = countriesViewModel.countryListUiState,
-                                countrySearchButtonClicked = {
-                                    navController.navigate(CountriesScreen.Map.name)
-                                },
-                                countryListItemClicked = { country ->
-                                    countriesViewModel.setSelectedCountry(country)
-                                },
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp),
-                                countriesViewModel = countriesViewModel
-                            )
-                        }
-                        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.TopStart) {
-                            /*if (countriesViewModel.selectedCountryUiState is SelectedCountryUiState.Loading &&
-                                countriesViewModel.countryListUiState is CountryListUiState.Success) {
-                                countriesViewModel.setSelectedCountry((countriesViewModel.countryListUiState as CountryListUiState.Success).countries.first())
-                            }*/
-                            CountryDetailScreen(
-                                selectedCountryUiState = countriesViewModel.selectedCountryUiState,
-                                modifier = Modifier.scale(0.8f),
-                                countriesViewModel = countriesViewModel
-                            ) {
-                                countriesViewModel.setSelectedCountry(it)
-                                navController.navigate(com.ltu.m7019e.miniproject.countries.CountriesScreen.Map.name)
-                            }
-                        }
-                    }
+                    columns = 2
                 } else {
-                    CountryListScreen(
-                        countryListUiState = countriesViewModel.countryListUiState,
-                        countrySearchButtonClicked = {
-                            navController.navigate(CountriesScreen.Map.name)
-                        },
-                        countryListItemClicked = { country ->
-                            countriesViewModel.setSelectedCountry(country)
-                            navController.navigate(CountriesScreen.Detail.name)
-                        },
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        countriesViewModel = countriesViewModel
-                    )
+                    columns = 1
                 }
+                CountryListScreen(
+                    countryListUiState = countriesViewModel.countryListUiState,
+                    countrySearchButtonClicked = {
+                        navController.navigate(CountriesScreen.Map.name)
+                    },
+                    countryListItemClicked = { country ->
+                        countriesViewModel.setSelectedCountry(country)
+                        navController.navigate(CountriesScreen.Detail.name)
+                    },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    countriesViewModel = countriesViewModel,
+                    columns = columns
+                )
             }
             composable(route = CountriesScreen.Detail.name) {
                 if (isLandscape) {
@@ -230,7 +203,8 @@ fun CountriesApp(
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(8.dp),
-                                countriesViewModel = countriesViewModel
+                                countriesViewModel = countriesViewModel,
+                                columns = 1
                             )
                         }
                     }
@@ -256,7 +230,8 @@ fun CountriesApp(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(8.dp),
-                            countriesViewModel = countriesViewModel
+                            countriesViewModel = countriesViewModel,
+                            columns = 1
                         )
                     }
                 }
