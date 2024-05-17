@@ -57,7 +57,9 @@ fun CountriesAppBar(
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     TopAppBar(
-        title = { Text(stringResource(currentScreen.title)) },
+        title = { Text(stringResource(currentScreen.title),
+            style = MaterialTheme.typography.displayMedium
+        ) },
         //title = { Text(currentScreen.title) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -83,7 +85,8 @@ fun CountriesAppBar(
 
                     },
                     text = {
-                        Text("Saved Countries")
+                        Text("Saved Countries",
+                            style = MaterialTheme.typography.labelSmall)
                     }
                 )
                 DropdownMenuItem(
@@ -95,7 +98,8 @@ fun CountriesAppBar(
 
                     },
                     text = {
-                        Text("All Countries")
+                        Text("All Countries",
+                            style = MaterialTheme.typography.labelSmall)
                     }
                 )
             }

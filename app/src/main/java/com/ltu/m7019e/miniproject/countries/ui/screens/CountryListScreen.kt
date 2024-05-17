@@ -52,6 +52,7 @@ fun CountryListScreen(
                             country = country,
                             modifier = Modifier.padding(8.dp),
                             countryListItemClicked = countryListItemClicked,
+
                         )
                     }
                     /*
@@ -135,7 +136,7 @@ fun CountryListItemCard(
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = country.names.common,
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
