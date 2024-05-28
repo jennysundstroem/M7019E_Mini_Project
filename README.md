@@ -1,1 +1,2 @@
-# M7019E_Mini_Project
+# Mini Project for course M7019E 
+## Elvira Forslund Widenroth and Jenny Sundström
