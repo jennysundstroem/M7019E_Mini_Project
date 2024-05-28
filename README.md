@@ -11,7 +11,5 @@ To try the code out simply download and open in Andriod Studios. Simply sync wit
 
 ### Demo Pictures
 
-![List View](https://github.com/jennysundstroem/M7019E_Mini_Project/blob/main/pictures/Sk%C3%A4rmbild%202024-05-28%20093932.png)
-
-![Detail View](https://github.com/jennysundstroem/M7019E_Mini_Project/blob/main/pictures/Sk%C3%A4rmbild%202024-05-28%20095655.png)
+![List View](https://github.com/jennysundstroem/M7019E_Mini_Project/blob/main/pictures/Sk%C3%A4rmbild%202024-05-28%20093932.png) ![Detail View](https://github.com/jennysundstroem/M7019E_Mini_Project/blob/main/pictures/Sk%C3%A4rmbild%202024-05-28%20095655.png)
 
