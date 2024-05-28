@@ -14,11 +14,7 @@ import com.ltu.m7019e.miniproject.countries.database.CountriesRepository
 import com.ltu.m7019e.miniproject.countries.model.Country
 import com.ltu.m7019e.miniproject.countries.CountriesApplication
 import com.ltu.m7019e.miniproject.countries.database.SavedCountriesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -28,9 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -66,13 +63,11 @@ fun CountriesAppBar(
         title = { Text(stringResource(currentScreen.title),
             style = MaterialTheme.typography.displayMedium
         ) },
-        //title = { Text(currentScreen.title) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         actions = {
             IconButton(onClick = {
-                // Set the menu expanded state to the opposite of the current state
                 menuExpanded = !menuExpanded
             }) {
                 Icon(
@@ -84,9 +79,7 @@ fun CountriesAppBar(
 
                 DropdownMenuItem(
                     onClick = {
-                        // Set the selected movie list to popular
                         countriesViewModel.getSavedCountries()
-                        // Set the menu expanded state to false
                         menuExpanded = false
 
                     },
@@ -97,9 +90,7 @@ fun CountriesAppBar(
                 )
                 DropdownMenuItem(
                     onClick = {
-                        // Set the selected movie list to popular
                         countriesViewModel.getAllCountries()
-                        // Set the menu expanded state to false
                         menuExpanded = false
 
                     },
@@ -116,8 +107,8 @@ fun CountriesAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        //contentDescription = stringResource(R.string.back_button)
-                        contentDescription = "Back"
+                        contentDescription = stringResource(R.string.back_button)
+                        //contentDescription = "Back"
                     )
                 }
             }
@@ -164,17 +155,14 @@ fun CountriesApp(
                 }
                 CountryListScreen(
                     countryListUiState = countriesViewModel.countryListUiState,
-                    countrySearchButtonClicked = {
-                        navController.navigate(CountriesScreen.Map.name)
-                    },
                     countryListItemClicked = { country ->
                         countriesViewModel.setSelectedCountry(country)
                         navController.navigate(CountriesScreen.Detail.name)
                     },
+                    countriesViewModel = countriesViewModel,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    countriesViewModel = countriesViewModel,
                     columns = columns
                 )
             }
@@ -194,16 +182,13 @@ fun CountriesApp(
                         Box(modifier = Modifier.weight(1f)) {
                             CountryListScreen(
                                 countryListUiState = countriesViewModel.countryListUiState,
-                                countrySearchButtonClicked = {
-                                    navController.navigate(CountriesScreen.Map.name)
-                                },
                                 countryListItemClicked = { country ->
                                     countriesViewModel.setSelectedCountry(country)
                                 },
+                                countriesViewModel = countriesViewModel,
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(8.dp),
-                                countriesViewModel = countriesViewModel,
                                 columns = 1
                             )
                         }
@@ -221,16 +206,13 @@ fun CountriesApp(
                         Spacer(modifier = Modifier.padding(8.dp))
                         CountryListScreen(
                             countryListUiState = countriesViewModel.countryListUiState,
-                            countrySearchButtonClicked = {
-                                navController.navigate(CountriesScreen.Map.name)
-                            },
                             countryListItemClicked = { country ->
                                 countriesViewModel.setSelectedCountry(country)
                             },
+                            countriesViewModel = countriesViewModel,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(8.dp),
-                            countriesViewModel = countriesViewModel,
                             columns = 1
                         )
                     }
@@ -238,9 +220,8 @@ fun CountriesApp(
             }
             composable(route = CountriesScreen.Map.name) {
                 CountryMapScreen(
-                    selectedCountryUiState = countriesViewModel.selectedCountryUiState,
-                    countriesViewModel = countriesViewModel,
-                    modifier = Modifier)
+                    selectedCountryUiState = countriesViewModel.selectedCountryUiState
+                )
             }
         }
     }

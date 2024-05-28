@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -38,18 +36,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.ltu.m7019e.miniproject.countries.database.CountriesUIState
 import com.ltu.m7019e.miniproject.countries.model.Country
-import com.ltu.m7019e.miniproject.countries.ui.theme.CountriesTheme
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountriesViewModel
 import com.ltu.m7019e.miniproject.countries.viewmodel.CountryListUiState
-import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
 
 @Composable
 fun CountryListScreen(
     countryListUiState: CountryListUiState,
     countryListItemClicked: (Country) -> Unit,
-    countrySearchButtonClicked: () -> Unit,
     countriesViewModel: CountriesViewModel,
     modifier: Modifier = Modifier,
     columns: Int

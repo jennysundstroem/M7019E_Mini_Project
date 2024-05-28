@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.ltu.m7019e.miniproject.countries.viewmodel.CountriesViewModel
 import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
 
 
@@ -33,8 +32,6 @@ import com.ltu.m7019e.miniproject.countries.viewmodel.SelectedCountryUiState
 @Composable
 fun CountryMapScreen(
     selectedCountryUiState: SelectedCountryUiState,
-    modifier: Modifier,
-    countriesViewModel: CountriesViewModel,
 ) {
     MaterialTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
